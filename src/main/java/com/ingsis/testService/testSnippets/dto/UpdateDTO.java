@@ -1,4 +1,4 @@
-package testService.testSnippets.dto;
+package com.ingsis.testService.testSnippets.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

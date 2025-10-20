@@ -1,16 +1,16 @@
-package testService.testSnippets;
+package com.ingsis.testService.testSnippets;
 
+import com.ingsis.testService.testSnippets.dto.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import testService.storageConfig.StorageService;
-import testService.testSnippets.cases.TestCaseExpectedOutput;
-import testService.testSnippets.cases.TestCasesInput;
-import testService.testSnippets.cases.TestSnippets;
-import testService.testSnippets.dto.*;
-import testService.testSnippets.repos.TestCaseExpectedOutputRepository;
-import testService.testSnippets.repos.TestCasesInputRepository;
+import com.ingsis.testService.storageConfig.StorageService;
+import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
+import com.ingsis.testService.testSnippets.cases.TestCasesInput;
+import com.ingsis.testService.testSnippets.cases.TestSnippets;
+import com.ingsis.testService.testSnippets.repos.TestCaseExpectedOutputRepository;
+import com.ingsis.testService.testSnippets.repos.TestCasesInputRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;

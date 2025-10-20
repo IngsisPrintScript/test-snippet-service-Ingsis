@@ -1,8 +1,8 @@
-package testService.testSnippets.cases;
+package com.ingsis.testService.testSnippets.cases;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.UUID;
 

@@ -1,11 +1,11 @@
-package testService.testSnippets;
+package com.ingsis.testService.testSnippets;
 
+import com.ingsis.testService.testSnippets.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import testService.testSnippets.cases.TestCaseExpectedOutput;
-import testService.testSnippets.cases.TestCasesInput;
-import testService.testSnippets.cases.TestSnippets;
-import testService.testSnippets.dto.*;
+import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
+import com.ingsis.testService.testSnippets.cases.TestCasesInput;
+import com.ingsis.testService.testSnippets.cases.TestSnippets;
 
 @RestController
 @RequestMapping("/test")

@@ -1,4 +1,4 @@
-package testService.storageConfig;
+package com.ingsis.testService.storageConfig;
 
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;

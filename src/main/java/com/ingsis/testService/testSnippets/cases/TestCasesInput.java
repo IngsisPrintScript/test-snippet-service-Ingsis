@@ -1,4 +1,4 @@
-package testService.testSnippets.cases;
+package com.ingsis.testService.testSnippets.cases;
 
 import jakarta.persistence.*;
 

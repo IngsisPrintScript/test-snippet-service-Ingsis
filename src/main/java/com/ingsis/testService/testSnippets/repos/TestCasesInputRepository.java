@@ -1,9 +1,9 @@
-package testService.testSnippets.repos;
+package com.ingsis.testService.testSnippets.repos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import testService.testSnippets.cases.TestCasesInput;
-import testService.testSnippets.cases.TestSnippets;
+import com.ingsis.testService.testSnippets.cases.TestCasesInput;
+import com.ingsis.testService.testSnippets.cases.TestSnippets;
 
 import java.util.UUID;
 
