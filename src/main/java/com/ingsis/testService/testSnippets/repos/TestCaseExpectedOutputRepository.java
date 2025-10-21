@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface TestCaseExpectedOutputRepository extends JpaRepository<TestCaseExpectedOutput, UUID> {
 
-    public void deleteAllByTestCase(TestSnippets testCase);
+    public void deleteAllByTestSnippet(TestSnippets testSnippet);
 }

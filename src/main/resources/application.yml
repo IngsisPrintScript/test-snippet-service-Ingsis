@@ -15,6 +15,9 @@ spring:
     redis:
       host: localhost
       port: 6378
+server:
+  port: 8084
+  address: 0.0.0.0
 
 azure:
   storage:

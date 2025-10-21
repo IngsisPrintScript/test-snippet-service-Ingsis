@@ -10,7 +10,7 @@ public class TestCasesInput {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String input;
+    private String inputUrl;
 
     @ManyToOne
     @JoinColumn(name = "test_snippet_id")
@@ -18,7 +18,7 @@ public class TestCasesInput {
 
     public TestCasesInput() {}
     public TestCasesInput(String value, TestSnippets testCase) {
-        this.input = value;
+        this.inputUrl = value;
         this.testSnippet = testCase;
     }
 
@@ -33,12 +33,12 @@ public class TestCasesInput {
         return id;
     }
 
-    public String getInput() {
-        return input;
+    public String getInputUrl() {
+        return inputUrl;
     }
 
-    public void setInput(String value) {
-        this.input = value;
+    public void setInputUrl(String value) {
+        this.inputUrl = value;
     }
 
 

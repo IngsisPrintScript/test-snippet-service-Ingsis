@@ -40,17 +40,24 @@ public class TestSnippetService {
     logger.info("Creating test for user {}", userId);
     TestSnippets testSnippets = new TestSnippets(userId, testDTO.name(), testDTO.snippetId());
     for (String input : testDTO.input()) {
-      String blobName = "inputs/" + testSnippets.getId() + "/" + UUID.randomUUID() + ".txt";
+      logger.info("Input to storage: {}", input);
+      String blobName = "inputs/" +  UUID.randomUUID() + ".txt";
+      logger.info(blobName);
       String url = storageService.upload("Testing", blobName, input.getBytes(StandardCharsets.UTF_8));
+      logger.info(url);
       testSnippets.getInputs().add(new TestCasesInput(url, testSnippets));
+      logger.info("Added input");
     }
 
     for (String output : testDTO.output()) {
-      String blobName = "outputs/" + testSnippets.getId() + "/" + UUID.randomUUID() + ".txt";
+      logger.info("Output to storage: {}", output);
+      String blobName = "outputs/" + UUID.randomUUID() + ".txt";
+      logger.info(blobName);
       String url = storageService.upload("Testing", blobName, output.getBytes(StandardCharsets.UTF_8));
+      logger.info(url);
       testSnippets.getExpectedOutputs().add(new TestCaseExpectedOutput(url, testSnippets));
+      logger.info("Added expected output to storage");
     }
-
     logger.info("Uploaded inputs and outputs to Azure for user {}", userId);
     return testRepo.save(testSnippets);
   }
@@ -62,22 +69,18 @@ public class TestSnippetService {
     if (existing == null) {
       throw new RuntimeException("Test not found or not owned by user");
     }
-
-    testCasesInputRepository.deleteAllByTestCase(existing);
-    testCaseExpectedOutput.deleteAllByTestCase(existing);
-
+    testCasesInputRepository.deleteAllByTestSnippet(existing);
+    testCaseExpectedOutput.deleteAllByTestSnippet(existing);
     List<TestCasesInput> newInputs = dto.inputs().stream()
             .map(input -> {
-              String blobName = "inputs/" + existing.getId() + "/" + UUID.randomUUID() + ".txt";
-              String url = storageService.upload("Testing", blobName, input.getBytes(StandardCharsets.UTF_8));
+              String url = storageService.upload("Testing", (existing.getInputs().stream().filter(i -> i.getInputUrl())).findFirst()),input.getBytes(StandardCharsets.UTF_8));
               return new TestCasesInput(url, existing);
             })
             .toList();
 
     List<TestCaseExpectedOutput> newOutputs = dto.outputs().stream()
             .map(output -> {
-              String blobName = "outputs/" + existing.getId() + "/" + UUID.randomUUID() + ".txt";
-              String url = storageService.upload("Testing", blobName, output.getBytes(StandardCharsets.UTF_8));
+              String url = storageService.upload("Testing",, output.getBytes(StandardCharsets.UTF_8));
               return new TestCaseExpectedOutput(url, existing);
             })
             .toList();
@@ -104,11 +107,11 @@ public class TestSnippetService {
     }
 
     List<String> inputs = testCase.getInputs().stream()
-            .map(input -> new String(storageService.download(input.getInput()), StandardCharsets.UTF_8))
+            .map(input -> new String(storageService.download(input.getInputUrl()), StandardCharsets.UTF_8))
             .toList();
 
     List<String> expectedOutputs = testCase.getExpectedOutputs().stream()
-            .map(output -> new String(storageService.download(output.getOutput()), StandardCharsets.UTF_8))
+            .map(output -> new String(storageService.download(output.getOutputUrl()), StandardCharsets.UTF_8))
             .toList();
 
     // Simular ejecución

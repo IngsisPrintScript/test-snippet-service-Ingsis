@@ -3,6 +3,7 @@ package com.ingsis.testService.testSnippets.cases;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,11 +22,11 @@ public class TestSnippets {
 
   private UUID snippetId;
 
-  @OneToMany(mappedBy = "testCase", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  private List<TestCasesInput> inputs;
+  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  private List<TestCasesInput> inputs = new ArrayList<>();
 
-  @OneToMany(mappedBy = "testCase", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  private List<TestCaseExpectedOutput> expectedOutputs;
+  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  private List<TestCaseExpectedOutput> expectedOutputs = new ArrayList<>();
 
   public TestSnippets() {}
 

@@ -11,27 +11,27 @@ public class TestCaseExpectedOutput {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String output;
+    private String outputUrl;
 
     @ManyToOne
     @JoinColumn(name = "test_snippet_id")
     private TestSnippets testSnippet;
 
     public TestCaseExpectedOutput() {}
-    public TestCaseExpectedOutput(String output, TestSnippets testCase) {
-        this.output = output;
+    public TestCaseExpectedOutput(String outputUrl, TestSnippets testCase) {
+        this.outputUrl = outputUrl;
         this.testSnippet = testCase;
     }
     public UUID getId() {
         return id;
     }
 
-    public String getOutput() {
-        return output;
+    public String getOutputUrl() {
+        return outputUrl;
     }
 
-    public void setOutput(String output) {
-        this.output = output;
+    public void setOutputUrl(String output) {
+        this.outputUrl = output;
     }
 
     public void setTestCase(TestSnippets testCase) {

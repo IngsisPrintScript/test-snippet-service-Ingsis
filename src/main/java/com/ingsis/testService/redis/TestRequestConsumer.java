@@ -65,6 +65,7 @@ public class TestRequestConsumer extends RedisStreamConsumer<String>{
                 testResultProducer.publish(new TestResultEvent(
                         event.ownerId(),
                         event.snippetId(),
+                        event.testId(),
                         response.status()
                 ));
             } catch (Exception ex) {

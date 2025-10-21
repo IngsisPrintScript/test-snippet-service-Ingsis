@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface TestCasesInputRepository extends JpaRepository<TestCasesInput, UUID> {
 
-    public void deleteAllByTestCase(TestSnippets testCase);
+    public void deleteAllByTestSnippet(TestSnippets testSnippet);
 }

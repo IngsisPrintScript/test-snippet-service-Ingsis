@@ -27,10 +27,10 @@ public class TestSnippetsController {
               created.getSnippetId(),
               created.getName(),
               created.getInputs().stream()
-                      .map(TestCasesInput::getInput)
+                      .map(TestCasesInput::getInputUrl)
                       .toList(),
               created.getExpectedOutputs().stream()
-                      .map(TestCaseExpectedOutput::getOutput)
+                      .map(TestCaseExpectedOutput::getOutputUrl)
                       .toList()
       );
       return ResponseEntity.ok(response);
@@ -51,10 +51,10 @@ public class TestSnippetsController {
               updated.getSnippetId(),
               updated.getName(),
               updated.getInputs().stream()
-                      .map(TestCasesInput::getInput)
+                      .map(TestCasesInput::getInputUrl)
                       .toList(),
               updated.getExpectedOutputs().stream()
-                      .map(TestCaseExpectedOutput::getOutput)
+                      .map(TestCaseExpectedOutput::getOutputUrl)
                       .toList()
       );
       return ResponseEntity.ok(response);
@@ -69,4 +69,5 @@ public class TestSnippetsController {
           @RequestBody TestToRunDTO testToRunDTO) {
     return ResponseEntity.ok(testSnippetService.runTestCase(userId, testToRunDTO));
   }
+
 }
