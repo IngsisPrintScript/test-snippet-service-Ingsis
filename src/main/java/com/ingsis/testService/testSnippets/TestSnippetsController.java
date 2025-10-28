@@ -8,6 +8,7 @@ import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
 import com.ingsis.testService.testSnippets.cases.TestCasesInput;
 import com.ingsis.testService.testSnippets.cases.TestSnippets;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -56,6 +57,15 @@ public class TestSnippetsController {
     }
   }
 
+  @GetMapping("/getBySnippet")
+  public ResponseEntity<List<GetTestDTO>> getBySnippet(@RequestParam String userId,@RequestParam UUID snippetId){
+    try {
+      List<GetTestDTO> getTest = testSnippetService.getTestsBySnippetIdAndTestOwner(userId,snippetId);
+      return ResponseEntity.ok(getTest);
+    }catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+  }
   @DeleteMapping()
   public ResponseEntity<String> deleteParticularTest(
           @RequestParam String userId,

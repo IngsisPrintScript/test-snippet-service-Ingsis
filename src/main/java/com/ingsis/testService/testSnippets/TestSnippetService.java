@@ -85,6 +85,23 @@ public class TestSnippetService {
                 testsToDelete.size(), testOwner, snippetId);
     }
 
+    public List<GetTestDTO> getTestsBySnippetIdAndTestOwner(String testOwner, UUID snippetId) {
+        logger.info("Fetching tests for user {} and snippet {}", testOwner, snippetId);
+
+        List<TestSnippets> tests = testRepo.findAllByTestOwnerAndSnippetId(testOwner, snippetId);
+        if (tests.isEmpty()) {
+            logger.warn("No tests found for user {} and snippet {}", testOwner, snippetId);
+            return List.of();
+        }
+
+        List<GetTestDTO> result = tests.stream()
+                .map(this::convertToGetDTO)
+                .toList();
+
+        logger.info("Found {} tests for user {} and snippet {}", result.size(), testOwner, snippetId);
+        return result;
+    }
+
     public GetTestDTO convertToGetDTO(TestSnippets updated){
         logger.info("Converting inputs test: {}", updated.getInputs());
         List<String> inputs = updated.getInputs().stream()
