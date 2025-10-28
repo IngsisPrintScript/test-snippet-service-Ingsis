@@ -1,4 +1,6 @@
 package com.ingsis.testService.testSnippets.dto;
 
-public record SnippetTestIdDTO() {
+import java.util.UUID;
+
+public record SnippetTestIdDTO(UUID snippetId) {
 }

@@ -22,10 +22,10 @@ public class TestSnippets {
 
   private UUID snippetId;
 
-  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<TestCasesInput> inputs = new ArrayList<>();
 
-  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<TestCaseExpectedOutput> expectedOutputs = new ArrayList<>();
 
   public TestSnippets() {}
