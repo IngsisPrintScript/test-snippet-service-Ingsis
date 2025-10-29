@@ -13,4 +13,5 @@ public interface TestRepo extends JpaRepository<TestSnippets, UUID> {
 
     TestSnippets findByIdAndTestOwner(UUID id, String testOwner);
     List<TestSnippets> findAllByTestOwnerAndSnippetId(String testOwner, UUID snippetId);
+    List<TestSnippets> findAllBySnippetId(UUID snippetId);
 }

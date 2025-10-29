@@ -102,6 +102,23 @@ public class TestSnippetService {
         return result;
     }
 
+    public List<GetTestDTO> getTestsBySnippetId(UUID snippetId) {
+        logger.info("Fetching tests for snippet: {}", snippetId);
+
+        List<TestSnippets> tests = testRepo.findAllBySnippetId(snippetId);
+        if (tests.isEmpty()) {
+            logger.warn("No tests found for snippet: {}",snippetId);
+            return List.of();
+        }
+
+        List<GetTestDTO> result = tests.stream()
+                .map(this::convertToGetDTO)
+                .toList();
+
+        logger.info("Found {} tests for snippet: {}", result.size(), snippetId);
+        return result;
+    }
+
     public GetTestDTO convertToGetDTO(TestSnippets updated){
         logger.info("Converting inputs test: {}", updated.getInputs());
         List<String> inputs = updated.getInputs().stream()
@@ -113,6 +130,7 @@ public class TestSnippetService {
                 .toList();
         logger.info("Creating GetTestDTO");
         return new GetTestDTO(
+                updated.getId(),
                 updated.getSnippetId(),
                 updated.getName(),
                 inputs,

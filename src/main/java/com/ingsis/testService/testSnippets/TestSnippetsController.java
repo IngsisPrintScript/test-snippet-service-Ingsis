@@ -28,6 +28,7 @@ public class TestSnippetsController {
     try {
       TestSnippets created = testSnippetService.createTestSnippets(userId, testDTO);
       GetTestDTO response = new GetTestDTO(
+              created.getId(),
               created.getSnippetId(),
               created.getName(),
               created.getInputs().stream()
@@ -61,6 +62,16 @@ public class TestSnippetsController {
   public ResponseEntity<List<GetTestDTO>> getBySnippet(@RequestParam String userId,@RequestParam UUID snippetId){
     try {
       List<GetTestDTO> getTest = testSnippetService.getTestsBySnippetIdAndTestOwner(userId,snippetId);
+      return ResponseEntity.ok(getTest);
+    }catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @GetMapping("/getSnippetTests")
+  public ResponseEntity<List<GetTestDTO>> getSnippetTests(@RequestParam UUID snippetId){
+    try {
+      List<GetTestDTO> getTest = testSnippetService.getTestsBySnippetId(snippetId);
       return ResponseEntity.ok(getTest);
     }catch (Exception e) {
       return ResponseEntity.badRequest().build();
