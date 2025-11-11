@@ -11,11 +11,7 @@ import java.util.UUID;
 public class TestSnippets {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
-
-  @NotBlank
-  private String testOwner;
 
   @NotBlank
   private String name;
@@ -31,14 +27,15 @@ public class TestSnippets {
   public TestSnippets() {}
 
   public TestSnippets(
-          String testOwner,
+          UUID id,
           String name,
           UUID snippetId
   ) {
-    this.testOwner = testOwner;
+    this.id = id;
     this.name = name;
     this.snippetId = snippetId;
   }
+
 
   public UUID getId() {
     return id;
@@ -51,9 +48,7 @@ public class TestSnippets {
   public UUID getSnippetId() {
     return snippetId;
   }
-  public String getTestOwner() {
-    return testOwner;
-  }
+
   public List<TestCasesInput> getInputs() {
     return inputs;
   }

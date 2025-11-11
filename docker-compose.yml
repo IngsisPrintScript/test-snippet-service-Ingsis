@@ -12,17 +12,27 @@ services:
       - .env
     volumes:
       - db:/var/lib/postgresql/data
+    networks:
+      - snippet-net
 
-  snippet-service:
+  test-service:
     build: .
     container_name: test-service
     ports:
       - "${API_PORT}:8084"
     env_file:
       - .env
+    environment:
+      BUCKET_URL: ${BUCKET_URL}
     depends_on:
       - db
+    networks:
+      - snippet-net
 
 volumes:
   db:
   gradle-cache:
+
+networks:
+  snippet-net:
+    external: true

@@ -6,9 +6,7 @@ import java.util.UUID;
 
 @Entity
 public class TestCaseExpectedOutput {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String output;
@@ -18,10 +16,13 @@ public class TestCaseExpectedOutput {
     private TestSnippets testSnippet;
 
     public TestCaseExpectedOutput() {}
-    public TestCaseExpectedOutput(String outputUrl, TestSnippets testCase) {
+
+    public TestCaseExpectedOutput(UUID id, String outputUrl, TestSnippets testSnippet) {
+        this.id = id;
         this.output = outputUrl;
-        this.testSnippet = testCase;
+        this.testSnippet = testSnippet;
     }
+
     public UUID getId() {
         return id;
     }
@@ -34,11 +35,11 @@ public class TestCaseExpectedOutput {
         this.output = output;
     }
 
-    public void setTestCase(TestSnippets testCase) {
-        this.testSnippet = testCase;
-    }
-    public TestSnippets getTestCase() {
+    public TestSnippets getTestSnippet() {
         return testSnippet;
     }
 
+    public void setTestSnippet(TestSnippets testSnippet) {
+        this.testSnippet = testSnippet;
+    }
 }

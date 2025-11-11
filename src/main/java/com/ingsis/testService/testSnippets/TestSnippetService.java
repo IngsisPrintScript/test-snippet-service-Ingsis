@@ -1,6 +1,8 @@
 package com.ingsis.testService.testSnippets;
 
+import com.ingsis.testService.azureStorageConfig.AssetService;
 import com.ingsis.testService.testSnippets.dto.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,99 +17,83 @@ import java.util.UUID;
 public class TestSnippetService {
 
     private final TestRepo testRepo;
+    private final AssetService assetService;
     private static final Logger logger = LoggerFactory.getLogger(TestSnippetService.class);
 
 
-    public TestSnippetService(TestRepo testRepo) {
+    public TestSnippetService(TestRepo testRepo, AssetService assetService) {
         this.testRepo = testRepo;
+        this.assetService = assetService;
     }
 
     @Transactional
-    public TestSnippets createTestSnippets(String userId, TestDTO testDTO) {
-        logger.info("Creating test for user {}", userId);
-        TestSnippets testSnippets = new TestSnippets(userId, testDTO.name(), testDTO.snippetId());
+    public TestSnippets createTestSnippets(TestDTO testDTO) {
+        TestSnippets testSnippets = new TestSnippets(UUID.randomUUID(),testDTO.name(), testDTO.snippetId());
+        logger.info("Creating test snippets with id {}", testSnippets.getId());
         for (String input : testDTO.input()) {
           logger.info("Input to storage: {}", input);
-          testSnippets.getInputs().add(new TestCasesInput(input, testSnippets));
+          testSnippets.getInputs().add(new TestCasesInput(UUID.randomUUID(),input, testSnippets));
           logger.info("Added input");
         }
-
         for (String output : testDTO.output()) {
           logger.info("Output to storage: {}", output);
-          testSnippets.getExpectedOutputs().add(new TestCaseExpectedOutput(output, testSnippets));
+          testSnippets.getExpectedOutputs().add(new TestCaseExpectedOutput(UUID.randomUUID(),output, testSnippets));
           logger.info("Added expected output to storage");
         }
-        logger.info("Uploaded inputs and outputs to Azure for user {}", userId);
-        return testRepo.save(testSnippets);
+        TestSnippets test = testRepo.saveAndFlush(testSnippets);
+        logger.info("Saved test snippets with id {}", testSnippets.getId());
+        return test;
     }
 
     @Transactional
-    public TestSnippets updateTest(String userId, UpdateDTO dto) {
-        logger.info("Updating test for user {}", userId);
-        TestSnippets existing = testRepo.findByIdAndTestOwner(dto.testId(), userId);
+    public TestSnippets updateTest(UpdateDTO dto) {
+        TestSnippets existing = testRepo.findById(dto.testId()).orElseThrow(() -> new EntityNotFoundException("Test not found"));
         if (existing == null) {
           throw new RuntimeException("Test not found or not owned by user");
         }
         existing.getInputs().clear();
         existing.getExpectedOutputs().clear();
         for (String input : dto.inputs()) {
-          existing.getInputs().add(new TestCasesInput(input, existing));
+          existing.getInputs().add(new TestCasesInput(UUID.randomUUID(),input, existing));
         }
         for (String output : dto.outputs()) {
-          existing.getExpectedOutputs().add(new TestCaseExpectedOutput(output, existing));
+          existing.getExpectedOutputs().add(new TestCaseExpectedOutput(UUID.randomUUID(),output, existing));
         }
         return testRepo.save(existing);
     }
 
     @Transactional
-    public void deleteTest(String testOwner, UUID testId) {
-        logger.info("Deleting test {} for user {}", testId, testOwner);
-        TestSnippets testToDelete = testRepo.findByIdAndTestOwner(testId, testOwner);
+    public void deleteTest(UUID testId) {
+        logger.info("Deleting test {} ", testId);
+        TestSnippets testToDelete = testRepo.findById(testId).orElseThrow(() -> new EntityNotFoundException("Test not found"));
         if (testToDelete == null) {
-          logger.error("Test {} not found or not owned by user {}", testId, testOwner);
+          logger.error("Test {} not found or not owned", testId);
           throw new RuntimeException("Test not found or not owned by user");
         }
         testRepo.delete(testToDelete);
         testRepo.delete(testToDelete);
-        logger.info("Test {} successfully deleted for user {}",testId, testOwner);
+        logger.info("Test {} successfully deleted",testId);
     }
 
     @Transactional
-    public void deleteTestsByOwnerAndSnippet(String testOwner, UUID snippetId) {
-        logger.info("Deleting all tests for user {} and snippet {}", testOwner, snippetId);
-        List<TestSnippets> testsToDelete = testRepo.findAllByTestOwnerAndSnippetId(testOwner, snippetId);
+    public void deleteTestsBySnippet(UUID snippetId) {
+        logger.info("Deleting all tests for snippet {}", snippetId);
+        List<TestSnippets> testsToDelete = testRepo.findAllBySnippetId(snippetId);
         if (testsToDelete.isEmpty()) {
-            logger.warn("No tests found for user {} and snippet {}", testOwner, snippetId);
+            logger.warn("No tests found for snippet {}", snippetId);
             return;
         }
         testRepo.deleteAll(testsToDelete);
-        logger.info("Successfully deleted {} tests for user {} and snippet {}",
-                testsToDelete.size(), testOwner, snippetId);
-    }
-
-    public List<GetTestDTO> getTestsBySnippetIdAndTestOwner(String testOwner, UUID snippetId) {
-        logger.info("Fetching tests for user {} and snippet {}", testOwner, snippetId);
-
-        List<TestSnippets> tests = testRepo.findAllByTestOwnerAndSnippetId(testOwner, snippetId);
-        if (tests.isEmpty()) {
-            logger.warn("No tests found for user {} and snippet {}", testOwner, snippetId);
-            return List.of();
-        }
-
-        List<GetTestDTO> result = tests.stream()
-                .map(this::convertToGetDTO)
-                .toList();
-
-        logger.info("Found {} tests for user {} and snippet {}", result.size(), testOwner, snippetId);
-        return result;
+        logger.info("Successfully deleted {} tests for snippet {}",
+                testsToDelete.size(), snippetId);
     }
 
     public List<GetTestDTO> getTestsBySnippetId(UUID snippetId) {
-        logger.info("Fetching tests for snippet: {}", snippetId);
+        logger.info("Fetching tests for snippet {}",snippetId);
 
         List<TestSnippets> tests = testRepo.findAllBySnippetId(snippetId);
         if (tests.isEmpty()) {
-            logger.warn("No tests found for snippet: {}",snippetId);
+            logger.warn("No tests found for snippet {}", snippetId);
             return List.of();
         }
 
@@ -115,7 +101,7 @@ public class TestSnippetService {
                 .map(this::convertToGetDTO)
                 .toList();
 
-        logger.info("Found {} tests for snippet: {}", result.size(), snippetId);
+        logger.info("Found {} tests for snippet {}", result.size(), snippetId);
         return result;
     }
 
@@ -139,13 +125,13 @@ public class TestSnippetService {
     }
 
     @Transactional
-    public TestRunResultDTO runTestCase(String userId, TestToRunDTO testToRunDTO) {
-        logger.info("Running TestCase({}) for user {}", testToRunDTO.testCaseId(), userId);
+    public TestRunResultDTO runTestCase(TestToRunDTO testToRunDTO) {
+        logger.info("Running TestCase({})", testToRunDTO.testCaseId());
 
         TestSnippets testCase = testRepo.findById(testToRunDTO.testCaseId())
                 .orElseThrow(() -> new RuntimeException("TestCase not found"));
 
-        String snippetContent = testToRunDTO.content();
+        String snippetContent = assetService.getSnippet(testCase.getSnippetId()).getBody();
         if (snippetContent == null || snippetContent.isBlank()) {
           throw new RuntimeException("Snippet content is empty");
         }
@@ -158,7 +144,7 @@ public class TestSnippetService {
                 .map(TestCaseExpectedOutput::getOutput)
                 .toList();
 
-        List<String> actualOutputs = simulateRun(snippetContent, inputs);
+        List<String> actualOutputs = simulateRun(inputs);
 
         boolean passed = actualOutputs.equals(expectedOutputs);
         String message = passed
@@ -173,9 +159,13 @@ public class TestSnippetService {
         );
     }
 
-    private List<String> simulateRun(String content, List<String> inputs) {
+    private List<String> simulateRun(List<String> inputs) {
         return inputs.stream()
                 .map(input -> "Output for: " + input)
                 .toList();
+    }
+
+    public TestSnippets getTest(UUID testId) {
+        return testRepo.findById(testId).orElseThrow(() -> new RuntimeException("Test not found"));
     }
 }

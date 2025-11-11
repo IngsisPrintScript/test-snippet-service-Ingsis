@@ -61,9 +61,8 @@ public class TestRequestConsumer extends RedisStreamConsumer<String>{
                 logger.info("Processing lint request for Snippet({}) from User({})",
                         event.snippetId().toString(), event.ownerId());
 
-                TestRunResultDTO response = testSnippetService.runTestCase(event.ownerId(),new TestToRunDTO(event.testId(),event.content()));
+                TestRunResultDTO response = testSnippetService.runTestCase(new TestToRunDTO(event.testId(),event.snippetId()));
                 testResultProducer.publish(new TestResultEvent(
-                        event.ownerId(),
                         event.snippetId(),
                         event.testId(),
                         response.status()
