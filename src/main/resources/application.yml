@@ -2,7 +2,7 @@ spring:
   application:
     name: ingsis
   datasource:
-    url: ${DATABASE_URL}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5437/test}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
