@@ -2,7 +2,6 @@ package com.ingsis.testService.testSnippets.cases;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,32 +9,33 @@ import java.util.UUID;
 @Entity
 public class TestSnippets {
 
-  @Id
-  private UUID id;
+  @Id private UUID id;
 
-  @NotBlank
-  private String name;
+  @NotBlank private String name;
 
   private UUID snippetId;
 
-  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToMany(
+      mappedBy = "testSnippet",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY)
   private List<TestCasesInput> inputs = new ArrayList<>();
 
-  @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OneToMany(
+      mappedBy = "testSnippet",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY)
   private List<TestCaseExpectedOutput> expectedOutputs = new ArrayList<>();
 
   public TestSnippets() {}
 
-  public TestSnippets(
-          UUID id,
-          String name,
-          UUID snippetId
-  ) {
+  public TestSnippets(UUID id, String name, UUID snippetId) {
     this.id = id;
     this.name = name;
     this.snippetId = snippetId;
   }
-
 
   public UUID getId() {
     return id;
@@ -56,6 +56,12 @@ public class TestSnippets {
   public List<TestCaseExpectedOutput> getExpectedOutputs() {
     return expectedOutputs;
   }
-  public void setInputs(List<TestCasesInput> inputs) { this.inputs = inputs; }
-  public void setExpectedOutputs(List<TestCaseExpectedOutput> expectedOutputs) { this.expectedOutputs = expectedOutputs; }
+
+  public void setInputs(List<TestCasesInput> inputs) {
+    this.inputs = inputs;
+  }
+
+  public void setExpectedOutputs(List<TestCaseExpectedOutput> expectedOutputs) {
+    this.expectedOutputs = expectedOutputs;
+  }
 }

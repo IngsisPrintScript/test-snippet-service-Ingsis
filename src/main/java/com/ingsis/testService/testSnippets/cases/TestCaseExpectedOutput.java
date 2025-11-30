@@ -1,45 +1,43 @@
 package com.ingsis.testService.testSnippets.cases;
 
 import jakarta.persistence.*;
-
 import java.util.UUID;
 
 @Entity
 public class TestCaseExpectedOutput {
-    @Id
-    private UUID id;
+  @Id private UUID id;
 
-    private String output;
+  private String output;
 
-    @ManyToOne
-    @JoinColumn(name = "test_snippet_id")
-    private TestSnippets testSnippet;
+  @ManyToOne
+  @JoinColumn(name = "test_snippet_id")
+  private TestSnippets testSnippet;
 
-    public TestCaseExpectedOutput() {}
+  public TestCaseExpectedOutput() {}
 
-    public TestCaseExpectedOutput(UUID id, String outputUrl, TestSnippets testSnippet) {
-        this.id = id;
-        this.output = outputUrl;
-        this.testSnippet = testSnippet;
-    }
+  public TestCaseExpectedOutput(UUID id, String outputUrl, TestSnippets testSnippet) {
+    this.id = id;
+    this.output = outputUrl;
+    this.testSnippet = testSnippet;
+  }
 
-    public UUID getId() {
-        return id;
-    }
+  public UUID getId() {
+    return id;
+  }
 
-    public String getOutput() {
-        return output;
-    }
+  public String getOutput() {
+    return output;
+  }
 
-    public void setOutput(String output) {
-        this.output = output;
-    }
+  public void setOutput(String output) {
+    this.output = output;
+  }
 
-    public TestSnippets getTestSnippet() {
-        return testSnippet;
-    }
+  public TestSnippets getTestSnippet() {
+    return testSnippet;
+  }
 
-    public void setTestSnippet(TestSnippets testSnippet) {
-        this.testSnippet = testSnippet;
-    }
+  public void setTestSnippet(TestSnippets testSnippet) {
+    this.testSnippet = testSnippet;
+  }
 }
