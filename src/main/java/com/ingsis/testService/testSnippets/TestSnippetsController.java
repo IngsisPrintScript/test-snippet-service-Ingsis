@@ -1,14 +1,27 @@
 package com.ingsis.testService.testSnippets;
 
-import com.ingsis.testService.testSnippets.dto.*;
+import com.ingsis.testService.testSnippets.dto.GetTestDTO;
+import com.ingsis.testService.testSnippets.dto.TestDTO;
+import com.ingsis.testService.testSnippets.dto.TestRunResultDTO;
+import com.ingsis.testService.testSnippets.dto.TestToRunDTO;
+import com.ingsis.testService.testSnippets.dto.UpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.*;
+
 import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
 import com.ingsis.testService.testSnippets.cases.TestCasesInput;
 import com.ingsis.testService.testSnippets.cases.TestSnippets;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;

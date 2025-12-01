@@ -1,7 +1,12 @@
 package com.ingsis.testService.testSnippets;
 
 import com.ingsis.testService.azureStorageConfig.AssetService;
-import com.ingsis.testService.testSnippets.dto.*;
+import com.ingsis.testService.testSnippets.dto.GetTestDTO;
+import com.ingsis.testService.testSnippets.dto.TestDTO;
+import com.ingsis.testService.testSnippets.dto.TestRunResultDTO;
+import com.ingsis.testService.testSnippets.dto.TestStatus;
+import com.ingsis.testService.testSnippets.dto.TestToRunDTO;
+import com.ingsis.testService.testSnippets.dto.UpdateDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;

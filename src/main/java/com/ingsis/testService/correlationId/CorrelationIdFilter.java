@@ -1,6 +1,10 @@
 package com.ingsis.testService.correlationId;
 
-import jakarta.servlet.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jboss.logging.MDC;
 import org.springframework.stereotype.Component;

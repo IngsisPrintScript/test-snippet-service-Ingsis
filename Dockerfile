@@ -1,29 +1,25 @@
+# syntax=docker/dockerfile:1
+
 # --- Stage 1: build the application ---
 FROM gradle:8.4-jdk21-alpine AS builder
 
-WORKDIR /home/gradle/project
-
-# ============================
-# Credenciales para GitHub Packages
-# ============================
-ARG GITHUB_USERNAME
+ARG GITHUB_USER
 ARG GITHUB_TOKEN
 
-ENV GITHUB_USERNAME=${GITHUB_USERNAME}
-ENV GITHUB_TOKEN=${GITHUB_TOKEN}
+WORKDIR /home/gradle/project
 
-# Copiar sólo los archivos necesarios para cachear dependencias
-COPY build.gradle settings.gradle gradlew gradle /home/gradle/project/
+# Copiar código
+COPY . .
 
-# Descargar dependencias
-RUN gradle --no-daemon build -x test || return 0
+# Crear archivo gradle.properties dentro del contenedor
+RUN mkdir -p /home/gradle/.gradle && \
+    echo "gpr.user=${GITHUB_USER}" >> /home/gradle/.gradle/gradle.properties && \
+    echo "gpr.key=${GITHUB_TOKEN}" >> /home/gradle/.gradle/gradle.properties
 
-# Copiar el resto del código
-COPY . /home/gradle/project
+RUN chmod +x gradlew
 
-# Build real
-RUN gradle --no-daemon clean bootJar
-
+# Build del JAR con credenciales disponibles
+RUN ./gradlew --no-daemon clean bootJar
 
 # --- Stage 2: run the application ---
 FROM eclipse-temurin:21-jre-alpine
@@ -34,6 +30,6 @@ COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
 
 ENV JAVA_OPTS=""
 
-EXPOSE 8084
+EXPOSE 8081
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
