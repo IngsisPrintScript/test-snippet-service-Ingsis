@@ -5,10 +5,15 @@ import com.ingsis.testService.azureStorageConfig.AssetService;
 import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
 import com.ingsis.testService.testSnippets.cases.TestCasesInput;
 import com.ingsis.testService.testSnippets.cases.TestSnippets;
-import com.ingsis.testService.testSnippets.dto.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.ingsis.testService.testSnippets.dto.GetTestDTO;
+import com.ingsis.testService.testSnippets.dto.TestDTO;
+import com.ingsis.testService.testSnippets.dto.TestRunResultDTO;
+import com.ingsis.testService.testSnippets.dto.TestStatus;
+import com.ingsis.testService.testSnippets.dto.TestToRunDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
