@@ -13,7 +13,7 @@ class RedisConfigTest {
     void redisTemplate_has_serializers() {
         RedisConfig cfg = new RedisConfig();
         RedisConnectionFactory factory = mock(RedisConnectionFactory.class);
-        RedisTemplate<String, Object> template = cfg.redisTemplate(factory);
+        RedisTemplate<String, String> template = cfg.redisTemplate(factory);
         assertNotNull(template.getKeySerializer());
         assertNotNull(template.getValueSerializer());
     }

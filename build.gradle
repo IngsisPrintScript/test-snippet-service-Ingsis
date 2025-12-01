@@ -42,15 +42,27 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.austral.ingsis:redis-streams-mvc:0.1.13'
 
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.16.2'
-	implementation 'com.azure:azure-storage-blob:12.27.0'
-	implementation 'com.azure:azure-identity:1.12.2'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'com.h2database:h2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.register("installGitHooks") {
+    doLast {
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            exec {
+                commandLine "bash", "./scripts/install-hooks.sh"
+            }
+        } else {
+            exec {
+                commandLine "sh", "./scripts/install-hooks.sh"
+            }
+        }
+    }
+}
+tasks.named("build") {
+    dependsOn("installGitHooks")
 }
 
 tasks.named('test') {
