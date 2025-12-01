@@ -1,4 +1,4 @@
-name: Build & Push Linter Image
+name: Build & Push Test Image
 
 on:
   push:
@@ -57,7 +57,7 @@ jobs:
           docker build \
             --build-arg GITHUB_USER=${{ github.actor }} \
             --build-arg GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
-            -t ghcr.io/ingsisprintscript/linter-service:dev .
+            -t ghcr.io/ingsisprintscript/test-service:dev .
 
       - name: Push Docker image
-        run: docker push ghcr.io/ingsisprintscript/linter-service:dev
+        run: docker push ghcr.io/ingsisprintscript/test-service:dev
