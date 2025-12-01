@@ -1,10 +1,12 @@
 package com.ingsis.testService.authSecurityConfig;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Field;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.cors.CorsConfigurationSource;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SecurityConfigTest {
 

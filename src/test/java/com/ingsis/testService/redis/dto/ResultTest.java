@@ -1,10 +1,11 @@
 package com.ingsis.testService.redis.dto;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.testService.testSnippets.dto.TestStatus;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ResultTest {
 

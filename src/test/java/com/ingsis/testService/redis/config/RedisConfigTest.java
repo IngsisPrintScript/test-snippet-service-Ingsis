@@ -1,6 +1,6 @@
 package com.ingsis.testService.redis.config;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.Test;
