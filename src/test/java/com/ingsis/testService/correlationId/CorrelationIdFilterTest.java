@@ -12,55 +12,49 @@ import org.junit.jupiter.api.Test;
 
 class CorrelationIdFilterTest {
 
-  private CorrelationIdFilter filter;
+    private CorrelationIdFilter filter;
 
-  @BeforeEach
-  void setup() {
-    filter = new CorrelationIdFilter();
-    MDC.remove("correlationId");
-  }
+    @BeforeEach
+    void setup() {
+        filter = new CorrelationIdFilter();
+        MDC.remove("correlationId");
+    }
 
-  @Test
-  void whenHeaderPresent_putsAndRemovesMDC() throws Exception {
-    HttpServletRequest req = mock(HttpServletRequest.class);
-    ServletResponse resp = mock(ServletResponse.class);
-    FilterChain chain = mock(FilterChain.class);
+    @Test
+    void whenHeaderPresent_putsAndRemovesMDC() throws Exception {
+        HttpServletRequest req = mock(HttpServletRequest.class);
+        ServletResponse resp = mock(ServletResponse.class);
+        FilterChain chain = mock(FilterChain.class);
 
-    when(req.getHeader("X-Correlation-Id")).thenReturn("my-id");
+        when(req.getHeader("X-Correlation-Id")).thenReturn("my-id");
 
-    doAnswer(
-            invocation -> {
-              assertEquals("my-id", MDC.get("correlationId"));
-              return null;
-            })
-        .when(chain)
-        .doFilter(req, resp);
+        doAnswer(invocation -> {
+            assertEquals("my-id", MDC.get("correlationId"));
+            return null;
+        }).when(chain).doFilter(req, resp);
 
-    filter.doFilter(req, resp, chain);
+        filter.doFilter(req, resp, chain);
 
-    assertNull(MDC.get("correlationId"));
-  }
+        assertNull(MDC.get("correlationId"));
+    }
 
-  @Test
-  void whenHeaderMissing_generatesUUIDAndRemovesMDC() throws Exception {
-    HttpServletRequest req = mock(HttpServletRequest.class);
-    ServletResponse resp = mock(ServletResponse.class);
-    FilterChain chain = mock(FilterChain.class);
+    @Test
+    void whenHeaderMissing_generatesUUIDAndRemovesMDC() throws Exception {
+        HttpServletRequest req = mock(HttpServletRequest.class);
+        ServletResponse resp = mock(ServletResponse.class);
+        FilterChain chain = mock(FilterChain.class);
 
-    when(req.getHeader("X-Correlation-Id")).thenReturn(null);
+        when(req.getHeader("X-Correlation-Id")).thenReturn(null);
 
-    doAnswer(
-            invocation -> {
-              Object val = MDC.get("correlationId");
-              assertNotNull(val);
-              assertTrue(val.toString().length() > 0);
-              return null;
-            })
-        .when(chain)
-        .doFilter(req, resp);
+        doAnswer(invocation -> {
+            Object val = MDC.get("correlationId");
+            assertNotNull(val);
+            assertTrue(val.toString().length() > 0);
+            return null;
+        }).when(chain).doFilter(req, resp);
 
-    filter.doFilter(req, resp, chain);
+        filter.doFilter(req, resp, chain);
 
-    assertNull(MDC.get("correlationId"));
-  }
+        assertNull(MDC.get("correlationId"));
+    }
 }

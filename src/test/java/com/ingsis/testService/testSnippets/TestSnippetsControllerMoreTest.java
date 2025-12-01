@@ -16,43 +16,45 @@ import org.springframework.http.ResponseEntity;
 
 class TestSnippetsControllerMoreTest {
 
-  @Mock private TestSnippetService service;
+    @Mock
+    private TestSnippetService service;
 
-  @InjectMocks private TestSnippetsController controller;
+    @InjectMocks
+    private TestSnippetsController controller;
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-  }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
-  @Test
-  void testUpdateSnippets_returns_bad_request_on_exception() {
-    UpdateDTO dto = new UpdateDTO(UUID.randomUUID(), UUID.randomUUID(), "n", List.of(), List.of());
-    when(service.updateTest(dto)).thenThrow(new RuntimeException("boom"));
+    @Test
+    void testUpdateSnippets_returns_bad_request_on_exception() {
+        UpdateDTO dto = new UpdateDTO(UUID.randomUUID(), UUID.randomUUID(), "n", List.of(), List.of());
+        when(service.updateTest(dto)).thenThrow(new RuntimeException("boom"));
 
-    ResponseEntity<GetTestDTO> resp = controller.testUpdateSnippets(null, dto);
+        ResponseEntity<GetTestDTO> resp = controller.testUpdateSnippets(null, dto);
 
-    assertEquals(400, resp.getStatusCodeValue());
-  }
+        assertEquals(400, resp.getStatusCodeValue());
+    }
 
-  @Test
-  void getSnippetTests_handles_empty_list() {
-    UUID snippetId = UUID.randomUUID();
-    when(service.getTestsBySnippetId(snippetId)).thenReturn(List.of());
+    @Test
+    void getSnippetTests_handles_empty_list() {
+        UUID snippetId = UUID.randomUUID();
+        when(service.getTestsBySnippetId(snippetId)).thenReturn(List.of());
 
-    ResponseEntity<List<GetTestDTO>> resp = controller.getSnippetTests(null, snippetId);
+        ResponseEntity<List<GetTestDTO>> resp = controller.getSnippetTests(null, snippetId);
 
-    assertEquals(200, resp.getStatusCodeValue());
-    assertTrue(resp.getBody().isEmpty());
-  }
+        assertEquals(200, resp.getStatusCodeValue());
+        assertTrue(resp.getBody().isEmpty());
+    }
 
-  @Test
-  void deleteParticularTest_returns_not_found_on_runtime_exception() {
-    UUID testId = UUID.randomUUID();
-    doThrow(new RuntimeException("not found")).when(service).deleteTest(testId);
+    @Test
+    void deleteParticularTest_returns_not_found_on_runtime_exception() {
+        UUID testId = UUID.randomUUID();
+        doThrow(new RuntimeException("not found")).when(service).deleteTest(testId);
 
-    ResponseEntity<String> resp = controller.deleteParticularTest(null, testId);
+        ResponseEntity<String> resp = controller.deleteParticularTest(null, testId);
 
-    assertEquals(404, resp.getStatusCodeValue());
-  }
+        assertEquals(404, resp.getStatusCodeValue());
+    }
 }

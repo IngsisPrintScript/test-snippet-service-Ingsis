@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 
 class TestRepoInterfaceTest {
 
-  @Test
-  void test_is_interface() {
-    assertTrue(TestRepo.class.isInterface());
-  }
+    @Test
+    void test_is_interface() {
+        assertTrue(TestRepo.class.isInterface());
+    }
 }

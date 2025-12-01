@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 
 class AssetServiceTest {
 
-  @Test
-  void getSnippet_returnsBadRequest_whenRemoteFails() {
-    AssetService service = new AssetService("http://nonexistent.invalid");
-    ResponseEntity<String> resp = service.getSnippet(UUID.randomUUID());
-    assertEquals(400, resp.getStatusCodeValue());
-  }
+    @Test
+    void getSnippet_returnsBadRequest_whenRemoteFails() {
+        AssetService service = new AssetService("http://nonexistent.invalid");
+        ResponseEntity<String> resp = service.getSnippet(UUID.randomUUID());
+        assertEquals(400, resp.getStatusCodeValue());
+    }
 }

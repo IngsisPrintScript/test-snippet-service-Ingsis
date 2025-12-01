@@ -22,109 +22,109 @@ import org.springframework.http.ResponseEntity;
 @ExtendWith(MockitoExtension.class)
 class TestSnippetServiceTest {
 
-  @Mock private TestRepo testRepo;
+    @Mock
+    private TestRepo testRepo;
 
-  @Mock private AssetService assetService;
+    @Mock
+    private AssetService assetService;
 
-  @InjectMocks private TestSnippetService service;
+    @InjectMocks
+    private TestSnippetService service;
 
-  private UUID snippetId;
+    private UUID snippetId;
 
-  @BeforeEach
-  void setUp() {
-    snippetId = UUID.randomUUID();
-  }
+    @BeforeEach
+    void setUp() {
+        snippetId = UUID.randomUUID();
+    }
 
-  @Test
-  void createTestSnippets_saves_and_returns_entity() {
-    TestDTO dto = new TestDTO(snippetId, "nm", List.of("in1"), List.of("out1"));
+    @Test
+    void createTestSnippets_saves_and_returns_entity() {
+        TestDTO dto = new TestDTO(snippetId, "nm", List.of("in1"), List.of("out1"));
 
-    when(testRepo.saveAndFlush(any())).thenAnswer(i -> i.getArgument(0));
+        when(testRepo.saveAndFlush(any())).thenAnswer(i -> i.getArgument(0));
 
-    TestSnippets created = service.createTestSnippets(dto);
+        TestSnippets created = service.createTestSnippets(dto);
 
-    assertEquals("nm", created.getName());
-    assertEquals(1, created.getInputs().size());
-    assertEquals(1, created.getExpectedOutputs().size());
-    verify(testRepo).saveAndFlush(any());
-  }
+        assertEquals("nm", created.getName());
+        assertEquals(1, created.getInputs().size());
+        assertEquals(1, created.getExpectedOutputs().size());
+        verify(testRepo).saveAndFlush(any());
+    }
 
-  @Test
-  void runTestCase_passes_when_outputs_match_simulation() {
-    UUID testId = UUID.randomUUID();
-    TestSnippets test = new TestSnippets(testId, "n", snippetId);
-    test.getInputs().add(new TestCasesInput(UUID.randomUUID(), "in1", test));
-    test.getExpectedOutputs()
-        .add(new TestCaseExpectedOutput(UUID.randomUUID(), "Output for: in1", test));
+    @Test
+    void runTestCase_passes_when_outputs_match_simulation() {
+        UUID testId = UUID.randomUUID();
+        TestSnippets test = new TestSnippets(testId, "n", snippetId);
+        test.getInputs().add(new TestCasesInput(UUID.randomUUID(), "in1", test));
+        test.getExpectedOutputs().add(new TestCaseExpectedOutput(UUID.randomUUID(), "Output for: in1", test));
 
-    when(testRepo.findById(testId)).thenReturn(Optional.of(test));
-    when(assetService.getSnippet(snippetId)).thenReturn(ResponseEntity.ok("code"));
+        when(testRepo.findById(testId)).thenReturn(Optional.of(test));
+        when(assetService.getSnippet(snippetId)).thenReturn(ResponseEntity.ok("code"));
 
-    TestRunResultDTO result = service.runTestCase(new TestToRunDTO(testId, snippetId));
+        TestRunResultDTO result = service.runTestCase(new TestToRunDTO(testId, snippetId));
 
-    assertEquals(TestStatus.PASSED, result.status());
-  }
+        assertEquals(TestStatus.PASSED, result.status());
+    }
 
-  @Test
-  void runTestCase_throws_when_snippet_empty() {
-    UUID testId = UUID.randomUUID();
-    TestSnippets test = new TestSnippets(testId, "n", snippetId);
-    test.getInputs().add(new TestCasesInput(UUID.randomUUID(), "in1", test));
-    test.getExpectedOutputs()
-        .add(new TestCaseExpectedOutput(UUID.randomUUID(), "Output for: in1", test));
+    @Test
+    void runTestCase_throws_when_snippet_empty() {
+        UUID testId = UUID.randomUUID();
+        TestSnippets test = new TestSnippets(testId, "n", snippetId);
+        test.getInputs().add(new TestCasesInput(UUID.randomUUID(), "in1", test));
+        test.getExpectedOutputs().add(new TestCaseExpectedOutput(UUID.randomUUID(), "Output for: in1", test));
 
-    when(testRepo.findById(testId)).thenReturn(Optional.of(test));
-    when(assetService.getSnippet(snippetId)).thenReturn(ResponseEntity.ok("  "));
+        when(testRepo.findById(testId)).thenReturn(Optional.of(test));
+        when(assetService.getSnippet(snippetId)).thenReturn(ResponseEntity.ok("  "));
 
-    assertThrows(
-        RuntimeException.class, () -> service.runTestCase(new TestToRunDTO(testId, snippetId)));
-  }
+        assertThrows(RuntimeException.class, () -> service.runTestCase(new TestToRunDTO(testId, snippetId)));
+    }
 
-  @Test
-  void deleteTest_calls_delete_twice_as_implemented() {
-    UUID testId = UUID.randomUUID();
-    TestSnippets test = new TestSnippets(testId, "n", snippetId);
-    when(testRepo.findById(testId)).thenReturn(Optional.of(test));
+    @Test
+    void deleteTest_calls_delete_twice_as_implemented() {
+        UUID testId = UUID.randomUUID();
+        TestSnippets test = new TestSnippets(testId, "n", snippetId);
+        when(testRepo.findById(testId)).thenReturn(Optional.of(test));
 
-    service.deleteTest(testId);
+        service.deleteTest(testId);
 
-    verify(testRepo, times(2)).delete(test);
-  }
+        verify(testRepo, times(2)).delete(test);
+    }
 
-  @Test
-  void deleteTestsBySnippet_deletes_all_when_found() {
-    UUID sId = UUID.randomUUID();
-    TestSnippets t = new TestSnippets(UUID.randomUUID(), "n", sId);
-    when(testRepo.findAllBySnippetId(sId)).thenReturn(List.of(t));
+    @Test
+    void deleteTestsBySnippet_deletes_all_when_found() {
+        UUID sId = UUID.randomUUID();
+        TestSnippets t = new TestSnippets(UUID.randomUUID(), "n", sId);
+        when(testRepo.findAllBySnippetId(sId)).thenReturn(List.of(t));
 
-    service.deleteTestsBySnippet(sId);
+        service.deleteTestsBySnippet(sId);
 
-    verify(testRepo).deleteAll(List.of(t));
-  }
+        verify(testRepo).deleteAll(List.of(t));
+    }
 
-  @Test
-  void getTest_throws_when_not_found() {
-    UUID id = UUID.randomUUID();
-    when(testRepo.findById(id)).thenReturn(Optional.empty());
+    @Test
+    void getTest_throws_when_not_found() {
+        UUID id = UUID.randomUUID();
+        when(testRepo.findById(id)).thenReturn(Optional.empty());
 
-    assertThrows(RuntimeException.class, () -> service.getTest(id));
-  }
+        assertThrows(RuntimeException.class, () -> service.getTest(id));
+    }
 
-  @Test
-  void deleteTest_throws_when_not_found() {
-    UUID id = UUID.randomUUID();
-    when(testRepo.findById(id)).thenReturn(Optional.empty());
+    @Test
+    void deleteTest_throws_when_not_found() {
+        UUID id = UUID.randomUUID();
+        when(testRepo.findById(id)).thenReturn(Optional.empty());
 
-    assertThrows(jakarta.persistence.EntityNotFoundException.class, () -> service.deleteTest(id));
-  }
+        assertThrows(jakarta.persistence.EntityNotFoundException.class, () -> service.deleteTest(id));
+    }
 
-  @Test
-  void getTestsBySnippetId_returns_empty_list_when_none() {
-    UUID sId = UUID.randomUUID();
-    when(testRepo.findAllBySnippetId(sId)).thenReturn(List.of());
+    @Test
+    void getTestsBySnippetId_returns_empty_list_when_none() {
+        UUID sId = UUID.randomUUID();
+        when(testRepo.findAllBySnippetId(sId)).thenReturn(List.of());
 
-    List<GetTestDTO> res = service.getTestsBySnippetId(sId);
-    assertNotNull(res);
-    assertTrue(res.isEmpty());
-  }
+        List<GetTestDTO> res = service.getTestsBySnippetId(sId);
+        assertNotNull(res);
+        assertTrue(res.isEmpty());
+    }
 }

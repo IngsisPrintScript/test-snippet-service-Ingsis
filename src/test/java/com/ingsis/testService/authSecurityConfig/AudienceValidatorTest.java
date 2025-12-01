@@ -11,21 +11,21 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 class AudienceValidatorTest {
 
-  @Test
-  void validate_success_whenAudienceMatches() {
-    Jwt jwt = mock(Jwt.class);
-    when(jwt.getAudience()).thenReturn(List.of("my-audience"));
-    AudienceValidator validator = new AudienceValidator("my-audience");
-    OAuth2TokenValidatorResult result = validator.validate(jwt);
-    assertTrue(result.hasErrors() == false);
-  }
+    @Test
+    void validate_success_whenAudienceMatches() {
+        Jwt jwt = mock(Jwt.class);
+        when(jwt.getAudience()).thenReturn(List.of("my-audience"));
+        AudienceValidator validator = new AudienceValidator("my-audience");
+        OAuth2TokenValidatorResult result = validator.validate(jwt);
+        assertTrue(result.hasErrors() == false);
+    }
 
-  @Test
-  void validate_failure_whenAudienceMissing() {
-    Jwt jwt = mock(Jwt.class);
-    when(jwt.getAudience()).thenReturn(List.of("other-aud"));
-    AudienceValidator validator = new AudienceValidator("required-aud");
-    OAuth2TokenValidatorResult result = validator.validate(jwt);
-    assertTrue(result.hasErrors());
-  }
+    @Test
+    void validate_failure_whenAudienceMissing() {
+        Jwt jwt = mock(Jwt.class);
+        when(jwt.getAudience()).thenReturn(List.of("other-aud"));
+        AudienceValidator validator = new AudienceValidator("required-aud");
+        OAuth2TokenValidatorResult result = validator.validate(jwt);
+        assertTrue(result.hasErrors());
+    }
 }

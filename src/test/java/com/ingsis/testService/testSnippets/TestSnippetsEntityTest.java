@@ -11,27 +11,27 @@ import org.junit.jupiter.api.Test;
 
 class TestSnippetsEntityTest {
 
-  @Test
-  void construct_and_modify_inputs_and_outputs() {
-    UUID id = UUID.randomUUID();
-    UUID snippetId = UUID.randomUUID();
+    @Test
+    void construct_and_modify_inputs_and_outputs() {
+        UUID id = UUID.randomUUID();
+        UUID snippetId = UUID.randomUUID();
 
-    TestSnippets entity = new TestSnippets(id, "name", snippetId);
+        TestSnippets entity = new TestSnippets(id, "name", snippetId);
 
-    assertEquals(id, entity.getId());
-    assertEquals("name", entity.getName());
-    assertEquals(snippetId, entity.getSnippetId());
+        assertEquals(id, entity.getId());
+        assertEquals("name", entity.getName());
+        assertEquals(snippetId, entity.getSnippetId());
 
-    entity.getInputs().add(new TestCasesInput(UUID.randomUUID(), "in1", entity));
-    entity.getExpectedOutputs().add(new TestCaseExpectedOutput(UUID.randomUUID(), "out1", entity));
+        entity.getInputs().add(new TestCasesInput(UUID.randomUUID(), "in1", entity));
+        entity.getExpectedOutputs().add(new TestCaseExpectedOutput(UUID.randomUUID(), "out1", entity));
 
-    assertEquals(1, entity.getInputs().size());
-    assertEquals(1, entity.getExpectedOutputs().size());
+        assertEquals(1, entity.getInputs().size());
+        assertEquals(1, entity.getExpectedOutputs().size());
 
-    entity.setInputs(List.of());
-    entity.setExpectedOutputs(List.of());
+        entity.setInputs(List.of());
+        entity.setExpectedOutputs(List.of());
 
-    assertTrue(entity.getInputs().isEmpty());
-    assertTrue(entity.getExpectedOutputs().isEmpty());
-  }
+        assertTrue(entity.getInputs().isEmpty());
+        assertTrue(entity.getExpectedOutputs().isEmpty());
+    }
 }

@@ -8,24 +8,20 @@ import org.slf4j.MDC;
 
 class AssetServiceHeadersTest {
 
-  @Test
-  void getHeaders_includes_correlation_when_present() throws Exception {
-    AssetService svc = new AssetService("http://example.invalid");
+    @Test
+    void getHeaders_includes_correlation_when_present() throws Exception {
+        AssetService svc = new AssetService("http://example.invalid");
 
-    MDC.put("correlationId", "my-cid");
-    try {
-      Method m = AssetService.class.getDeclaredMethod("getHeaders");
-      m.setAccessible(true);
-      Object headers = m.invoke(svc);
-      String val =
-          (String)
-              headers
-                  .getClass()
-                  .getMethod("getFirst", String.class)
-                  .invoke(headers, "X-Correlation-Id");
-      assertEquals("my-cid", val);
-    } finally {
-      MDC.remove("correlationId");
+        MDC.put("correlationId", "my-cid");
+        try {
+            Method m = AssetService.class.getDeclaredMethod("getHeaders");
+            m.setAccessible(true);
+            Object headers = m.invoke(svc);
+            String val = (String) headers.getClass().getMethod("getFirst", String.class).invoke(headers,
+                    "X-Correlation-Id");
+            assertEquals("my-cid", val);
+        } finally {
+            MDC.remove("correlationId");
+        }
     }
-  }
 }

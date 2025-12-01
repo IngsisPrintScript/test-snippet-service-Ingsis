@@ -18,64 +18,66 @@ import org.springframework.http.ResponseEntity;
 
 class TestSnippetsControllerTest {
 
-  @Mock private TestSnippetService service;
+    @Mock
+    private TestSnippetService service;
 
-  @InjectMocks private TestSnippetsController controller;
+    @InjectMocks
+    private TestSnippetsController controller;
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-  }
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
-  @Test
-  void create_returns_ok_on_success() {
-    TestDTO dto = new TestDTO(UUID.randomUUID(), "n", List.of("i"), List.of("o"));
-    TestSnippets created = new TestSnippets(UUID.randomUUID(), "n", dto.snippetId());
-    when(service.createTestSnippets(dto)).thenReturn(created);
+    @Test
+    void create_returns_ok_on_success() {
+        TestDTO dto = new TestDTO(UUID.randomUUID(), "n", List.of("i"), List.of("o"));
+        TestSnippets created = new TestSnippets(UUID.randomUUID(), "n", dto.snippetId());
+        when(service.createTestSnippets(dto)).thenReturn(created);
 
-    ResponseEntity<GetTestDTO> resp = controller.testCreateSnippets(null, dto);
+        ResponseEntity<GetTestDTO> resp = controller.testCreateSnippets(null, dto);
 
-    assertEquals(200, resp.getStatusCodeValue());
-    assertNotNull(resp.getBody());
-  }
+        assertEquals(200, resp.getStatusCodeValue());
+        assertNotNull(resp.getBody());
+    }
 
-  @Test
-  void getSnippetIdByTestId_returns_uuid() {
-    UUID testId = UUID.randomUUID();
-    UUID snippetId = UUID.randomUUID();
-    TestSnippets t = new TestSnippets(testId, "n", snippetId);
-    when(service.getTest(testId)).thenReturn(t);
+    @Test
+    void getSnippetIdByTestId_returns_uuid() {
+        UUID testId = UUID.randomUUID();
+        UUID snippetId = UUID.randomUUID();
+        TestSnippets t = new TestSnippets(testId, "n", snippetId);
+        when(service.getTest(testId)).thenReturn(t);
 
-    ResponseEntity<UUID> resp = controller.getSnippetIdByTestId(null, testId);
+        ResponseEntity<UUID> resp = controller.getSnippetIdByTestId(null, testId);
 
-    assertEquals(snippetId, resp.getBody());
-  }
+        assertEquals(snippetId, resp.getBody());
+    }
 
-  @Test
-  void runTestCase_delegates_to_service() {
-    TestToRunDTO dto = new TestToRunDTO(UUID.randomUUID(), UUID.randomUUID());
-    when(service.runTestCase(dto)).thenReturn(null);
+    @Test
+    void runTestCase_delegates_to_service() {
+        TestToRunDTO dto = new TestToRunDTO(UUID.randomUUID(), UUID.randomUUID());
+        when(service.runTestCase(dto)).thenReturn(null);
 
-    ResponseEntity<?> resp = controller.runTestCase(null, dto);
+        ResponseEntity<?> resp = controller.runTestCase(null, dto);
 
-    assertEquals(200, resp.getStatusCodeValue());
-  }
+        assertEquals(200, resp.getStatusCodeValue());
+    }
 
-  @Test
-  void deleteParticularTest_returns_not_found_on_runtime_exception() {
-    UUID testId = UUID.randomUUID();
-    doThrow(new RuntimeException("boom")).when(service).deleteTest(testId);
+    @Test
+    void deleteParticularTest_returns_not_found_on_runtime_exception() {
+        UUID testId = UUID.randomUUID();
+        doThrow(new RuntimeException("boom")).when(service).deleteTest(testId);
 
-    ResponseEntity<String> resp = controller.deleteParticularTest(null, testId);
+        ResponseEntity<String> resp = controller.deleteParticularTest(null, testId);
 
-    assertEquals(404, resp.getStatusCodeValue());
-  }
+        assertEquals(404, resp.getStatusCodeValue());
+    }
 
-  @Test
-  void deleteTests_returns_ok_when_service_succeeds() {
-    UUID snippetId = UUID.randomUUID();
-    // no exception
-    ResponseEntity<String> resp = controller.deleteTests(null, snippetId);
-    assertEquals(200, resp.getStatusCodeValue());
-  }
+    @Test
+    void deleteTests_returns_ok_when_service_succeeds() {
+        UUID snippetId = UUID.randomUUID();
+        // no exception
+        ResponseEntity<String> resp = controller.deleteTests(null, snippetId);
+        assertEquals(200, resp.getStatusCodeValue());
+    }
 }

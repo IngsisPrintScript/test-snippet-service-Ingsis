@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestRepo extends JpaRepository<TestSnippets, UUID> {
-  List<TestSnippets> findAllBySnippetId(UUID snippetId);
+    List<TestSnippets> findAllBySnippetId(UUID snippetId);
 }

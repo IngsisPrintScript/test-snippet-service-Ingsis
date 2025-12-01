@@ -1,6 +1,10 @@
 package com.ingsis.testService.testSnippets.cases;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,59 +13,54 @@ import java.util.UUID;
 @Entity
 public class TestSnippets {
 
-  @Id private UUID id;
+    @Id
+    private UUID id;
 
-  @NotBlank private String name;
+    @NotBlank
+    private String name;
 
-  private UUID snippetId;
+    private UUID snippetId;
 
-  @OneToMany(
-      mappedBy = "testSnippet",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.LAZY)
-  private List<TestCasesInput> inputs = new ArrayList<>();
+    @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<TestCasesInput> inputs = new ArrayList<>();
 
-  @OneToMany(
-      mappedBy = "testSnippet",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.LAZY)
-  private List<TestCaseExpectedOutput> expectedOutputs = new ArrayList<>();
+    @OneToMany(mappedBy = "testSnippet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<TestCaseExpectedOutput> expectedOutputs = new ArrayList<>();
 
-  public TestSnippets() {}
+    public TestSnippets() {
+    }
 
-  public TestSnippets(UUID id, String name, UUID snippetId) {
-    this.id = id;
-    this.name = name;
-    this.snippetId = snippetId;
-  }
+    public TestSnippets(UUID id, String name, UUID snippetId) {
+        this.id = id;
+        this.name = name;
+        this.snippetId = snippetId;
+    }
 
-  public UUID getId() {
-    return id;
-  }
+    public UUID getId() {
+        return id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public UUID getSnippetId() {
-    return snippetId;
-  }
+    public UUID getSnippetId() {
+        return snippetId;
+    }
 
-  public List<TestCasesInput> getInputs() {
-    return inputs;
-  }
+    public List<TestCasesInput> getInputs() {
+        return inputs;
+    }
 
-  public List<TestCaseExpectedOutput> getExpectedOutputs() {
-    return expectedOutputs;
-  }
+    public List<TestCaseExpectedOutput> getExpectedOutputs() {
+        return expectedOutputs;
+    }
 
-  public void setInputs(List<TestCasesInput> inputs) {
-    this.inputs = inputs;
-  }
+    public void setInputs(List<TestCasesInput> inputs) {
+        this.inputs = inputs;
+    }
 
-  public void setExpectedOutputs(List<TestCaseExpectedOutput> expectedOutputs) {
-    this.expectedOutputs = expectedOutputs;
-  }
+    public void setExpectedOutputs(List<TestCaseExpectedOutput> expectedOutputs) {
+        this.expectedOutputs = expectedOutputs;
+    }
 }

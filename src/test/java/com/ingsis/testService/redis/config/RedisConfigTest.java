@@ -9,12 +9,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 class RedisConfigTest {
 
-  @Test
-  void redisTemplate_has_serializers() {
-    RedisConfig cfg = new RedisConfig();
-    RedisConnectionFactory factory = mock(RedisConnectionFactory.class);
-    RedisTemplate<String, Object> template = cfg.redisTemplate(factory);
-    assertNotNull(template.getKeySerializer());
-    assertNotNull(template.getValueSerializer());
-  }
+    @Test
+    void redisTemplate_has_serializers() {
+        RedisConfig cfg = new RedisConfig();
+        RedisConnectionFactory factory = mock(RedisConnectionFactory.class);
+        RedisTemplate<String, Object> template = cfg.redisTemplate(factory);
+        assertNotNull(template.getKeySerializer());
+        assertNotNull(template.getValueSerializer());
+    }
 }

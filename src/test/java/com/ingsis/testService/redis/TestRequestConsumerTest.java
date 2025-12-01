@@ -15,43 +15,40 @@ import org.springframework.data.redis.connection.stream.ObjectRecord;
 
 class TestRequestConsumerTest {
 
-  private TestRequestConsumer consumer;
-  private TestSnippetService testSnippetService;
-  private TestResultProducer testResultProducer;
-  private ObjectMapper objectMapper;
+    private TestRequestConsumer consumer;
+    private TestSnippetService testSnippetService;
+    private TestResultProducer testResultProducer;
+    private ObjectMapper objectMapper;
 
-  @BeforeEach
-  void setUp() {
-    testSnippetService = mock(TestSnippetService.class);
-    testResultProducer = mock(TestResultProducer.class);
-    objectMapper = new ObjectMapper();
-    @SuppressWarnings("unchecked")
-    org.springframework.data.redis.core.RedisTemplate<String, String> redisTemplate =
-        mock(org.springframework.data.redis.core.RedisTemplate.class);
+    @BeforeEach
+    void setUp() {
+        testSnippetService = mock(TestSnippetService.class);
+        testResultProducer = mock(TestResultProducer.class);
+        objectMapper = new ObjectMapper();
+        @SuppressWarnings("unchecked")
+        org.springframework.data.redis.core.RedisTemplate<String, String> redisTemplate = mock(
+                org.springframework.data.redis.core.RedisTemplate.class);
 
-    consumer =
-        new TestRequestConsumer(
-            "stream", "group", redisTemplate, testSnippetService, testResultProducer, objectMapper);
-  }
+        consumer = new TestRequestConsumer("stream", "group", redisTemplate, testSnippetService, testResultProducer,
+                objectMapper);
+    }
 
-  @Test
-  void onMessage_processes_event_and_publishes_result() throws Exception {
-    UUID snippetId = UUID.randomUUID();
-    UUID testId = UUID.randomUUID();
-    TestRequestEvent ev = new TestRequestEvent("owner", snippetId, testId, "java", "code");
+    @Test
+    void onMessage_processes_event_and_publishes_result() throws Exception {
+        UUID snippetId = UUID.randomUUID();
+        UUID testId = UUID.randomUUID();
+        TestRequestEvent ev = new TestRequestEvent("owner", snippetId, testId, "java", "code");
 
-    @SuppressWarnings("unchecked")
-    ObjectRecord<String, String> record = mock(ObjectRecord.class);
-    when(record.getValue()).thenReturn(objectMapper.writeValueAsString(ev));
+        @SuppressWarnings("unchecked")
+        ObjectRecord<String, String> record = mock(ObjectRecord.class);
+        when(record.getValue()).thenReturn(objectMapper.writeValueAsString(ev));
 
-    when(testSnippetService.runTestCase(any()))
-        .thenReturn(
-            new TestRunResultDTO(
-                TestStatus.PASSED, "m", java.util.List.of("o"), java.util.List.of("e")));
+        when(testSnippetService.runTestCase(any())).thenReturn(
+                new TestRunResultDTO(TestStatus.PASSED, "m", java.util.List.of("o"), java.util.List.of("e")));
 
-    consumer.onMessage(record);
-    Thread.sleep(200);
+        consumer.onMessage(record);
+        Thread.sleep(200);
 
-    verify(testResultProducer, atLeastOnce()).publish(any(TestResultEvent.class));
-  }
+        verify(testResultProducer, atLeastOnce()).publish(any(TestResultEvent.class));
+    }
 }
