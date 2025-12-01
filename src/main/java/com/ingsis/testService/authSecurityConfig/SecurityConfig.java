@@ -1,5 +1,8 @@
 package com.ingsis.testService.authSecurityConfig;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 
 public class SecurityConfig {
@@ -33,15 +32,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated()
-                )
-                .cors(withDefaults())
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(withDefaults())
-                )
-                .csrf(AbstractHttpConfigurer::disable);
+        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated()).cors(withDefaults())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults())).csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
@@ -49,11 +41,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:5173",
-                "http://localhost:3000",
-                "http://127.0.0.1:5173"
-        ));
+        configuration.setAllowedOrigins(
+                Arrays.asList("http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

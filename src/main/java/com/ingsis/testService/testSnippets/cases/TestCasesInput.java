@@ -1,11 +1,9 @@
 package com.ingsis.testService.testSnippets.cases;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
 import java.util.UUID;
 
 @Entity
@@ -19,7 +17,8 @@ public class TestCasesInput {
     @JoinColumn(name = "test_snippet_id")
     private TestSnippets testSnippet;
 
-    public TestCasesInput() {}
+    public TestCasesInput() {
+    }
 
     public TestCasesInput(UUID id, String value, TestSnippets testSnippet) {
         this.id = id;
