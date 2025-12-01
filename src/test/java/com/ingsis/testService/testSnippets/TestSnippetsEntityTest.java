@@ -1,5 +1,7 @@
 package com.ingsis.testService.testSnippets;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
 import com.ingsis.testService.testSnippets.cases.TestCasesInput;
@@ -7,9 +9,6 @@ import com.ingsis.testService.testSnippets.cases.TestSnippets;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestSnippetsEntityTest {
 

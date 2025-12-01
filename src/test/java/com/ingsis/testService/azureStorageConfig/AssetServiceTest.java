@@ -1,11 +1,10 @@
 package com.ingsis.testService.azureStorageConfig;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AssetServiceTest {
 

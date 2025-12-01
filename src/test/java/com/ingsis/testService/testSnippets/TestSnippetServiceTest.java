@@ -1,27 +1,5 @@
 package com.ingsis.testService.testSnippets;
 
-
-import com.ingsis.testService.azureStorageConfig.AssetService;
-import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
-import com.ingsis.testService.testSnippets.cases.TestCasesInput;
-import com.ingsis.testService.testSnippets.cases.TestSnippets;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import com.ingsis.testService.testSnippets.dto.GetTestDTO;
-import com.ingsis.testService.testSnippets.dto.TestDTO;
-import com.ingsis.testService.testSnippets.dto.TestRunResultDTO;
-import com.ingsis.testService.testSnippets.dto.TestStatus;
-import com.ingsis.testService.testSnippets.dto.TestToRunDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,6 +8,26 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.ingsis.testService.azureStorageConfig.AssetService;
+import com.ingsis.testService.testSnippets.cases.TestCaseExpectedOutput;
+import com.ingsis.testService.testSnippets.cases.TestCasesInput;
+import com.ingsis.testService.testSnippets.cases.TestSnippets;
+import com.ingsis.testService.testSnippets.dto.GetTestDTO;
+import com.ingsis.testService.testSnippets.dto.TestDTO;
+import com.ingsis.testService.testSnippets.dto.TestRunResultDTO;
+import com.ingsis.testService.testSnippets.dto.TestStatus;
+import com.ingsis.testService.testSnippets.dto.TestToRunDTO;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
 class TestSnippetServiceTest {

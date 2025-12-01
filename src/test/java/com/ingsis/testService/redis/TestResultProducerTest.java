@@ -1,5 +1,8 @@
 package com.ingsis.testService.redis;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ingsis.testService.redis.dto.TestResultEvent;
@@ -9,10 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StreamOperations;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class TestResultProducerTest {
 
