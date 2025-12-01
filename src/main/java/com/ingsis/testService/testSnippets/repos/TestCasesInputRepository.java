@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TestCasesInputRepository extends JpaRepository<TestCasesInput, UUID> {
 
-    public void deleteAllByTestSnippet(TestSnippets testSnippet);
+  public void deleteAllByTestSnippet(TestSnippets testSnippet);
 }
