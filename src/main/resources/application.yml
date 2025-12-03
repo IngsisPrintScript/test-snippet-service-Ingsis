@@ -3,8 +3,8 @@ spring:
     name: ingsis
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5437/test}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -18,11 +18,11 @@ spring:
           issuer-uri: ${AUTH0_ISSUER_URI}
   data:
     redis:
-      host: ${SPRING_REDIS_HOST:snippet_redis}
-      port: ${SPRING_REDIS_PORT:6379}
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
 
 server:
-  port: ${API_PORT:8084}
+  port: ${API_PORT:8086}
   address: 0.0.0.0
 
 okta:
