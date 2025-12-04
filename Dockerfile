@@ -30,6 +30,6 @@ COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
 
 ENV JAVA_OPTS=""
 
-EXPOSE 8086
+EXPOSE 8084
 
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
